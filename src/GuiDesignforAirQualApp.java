@@ -35,11 +35,14 @@ public class GuiDesignforAirQualApp extends JFrame {
 		mapImg = new JLabel("camera-angle-45-shot.png");
 		infoPan = new JPanel();
 		dAndT = new JLabel("Date and Time of Last Update:");
-		JPanel temp = new JPanel();
+		JPanel tempA = new JPanel();
 		date = new JTextField(10);
 		time = new JTextField(10);
-		
-		
+		JPanel tempB = new JPanel();
+		partType = new JLabel("Particle Type: ");
+		partTypeBox = new JTextField(75);
+		concentration = new JLabel("Concentration: ");
+		concBox = new JTextField(6);
 		pane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		pane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		
