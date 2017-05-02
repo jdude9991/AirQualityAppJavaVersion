@@ -1,4 +1,6 @@
+import java.awt.Color;
 import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.util.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -8,6 +10,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.ScrollPaneLayout;
 
 /**
  * GuiDesignforAirQualApp
@@ -30,6 +33,11 @@ public class GuiDesignforAirQualApp extends JFrame {
 	private JLabel concentration;
 	private JTextField concBox;
 	private JScrollPane pane;
+	private JPanel tempA;
+	private JPanel tempB;
+	private JPanel tempLabel;
+	private JPanel tempBox;
+	private JPanel paneAdd;
 		
 	//Constructor
 	GuiDesignforAirQualApp() {
@@ -48,14 +56,22 @@ public class GuiDesignforAirQualApp extends JFrame {
 		mapImg = new JLabel("camera-angle-45-shot.png");
 		infoPan = new JPanel();
 		dAndT = new JLabel("Date and Time of Last Update:");
-		JPanel tempA = new JPanel();
+		tempA = new JPanel();
 		date = new JTextField(10);
 		time = new JTextField(10);
-		JPanel tempB = new JPanel();
+		tempB = new JPanel();
 		partType = new JLabel("Particle Type: ");
 		partTypeBox = new JTextField(75);
 		concentration = new JLabel("Concentration: ");
 		concBox = new JTextField(6);
+		infoPan = new JPanel();
+		pan_Map = new JPanel();
+		tempLabel = new JPanel();
+		tempBox = new JPanel();
+		tempA = new JPanel();
+		tempB = new JPanel();
+		paneAdd = new JPanel();
+		pane = new JScrollPane(paneAdd);
 		
 		//makes all text boxes uneditable
 		date.setEditable(false);
@@ -65,7 +81,7 @@ public class GuiDesignforAirQualApp extends JFrame {
 		
 		//puts info into text box
 		date.setText(getAndFormatDate());
-		time.setText(""+getTime());
+		time.setText(getTime());
 		partTypeBox.setText(getParticle());
 		concBox.setText(getConc());
 		
@@ -74,13 +90,41 @@ public class GuiDesignforAirQualApp extends JFrame {
 		pane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		
 		//sets up map panel
-		pan_Map = new JPanel();
 		pan_Map.setLayout(new FlowLayout());
 		pan_Map.add(mapImg);
 		
 		//sets up info panel
+		infoPan.setLayout(new GridLayout(2,1));
 		
+		tempLabel.setLayout(new FlowLayout());
+		tempLabel.add(dAndT);
 		
+		tempBox.setLayout(new GridLayout(2,1));
+		tempBox.add(date);
+		tempBox.add(time);
+		
+		tempA.setLayout(new GridLayout(1,2));
+		tempA.add(tempLabel);
+		tempA.add(tempBox);
+		
+		tempB.setLayout(new GridLayout(2,2));
+		tempB.add(partType);
+		tempB.add(partTypeBox);
+		tempB.add(concentration);
+		tempB.add(concBox);
+		
+		infoPan.add(tempA);
+		infoPan.add(tempB);
+		
+		paneAdd.setLayout(new GridLayout(2,1));
+		paneAdd.add(infoPan);
+		paneAdd.add(pan_Map);
+		
+		//adds paneAdd to pane
+		pane.setLayout(new ScrollPaneLayout());
+		
+		//adds pane to frame
+		add(pane);
 	}
 	
 	//Gets and formats date
@@ -91,9 +135,10 @@ public class GuiDesignforAirQualApp extends JFrame {
 	}
 	
 	//Gets Time
-	public long getTime(){
+	public String getTime(){
+		DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
 		Date time = new Date();
-		return time.getTime();
+		return timeFormat.format(time);
 	}
 	
 	//Gets the present particles
@@ -108,6 +153,8 @@ public class GuiDesignforAirQualApp extends JFrame {
 		String toReturn = concent + " PPM";
 		return toReturn;
 	}
+	
+	//main
 	public static void main(String[] args) {
 		new GuiDesignforAirQualApp();
 	}
