@@ -1,6 +1,7 @@
 import java.awt.FlowLayout;
 import java.util.Date;
-
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -29,12 +30,11 @@ public class GuiDesignforAirQualApp extends JFrame {
 	private JLabel concentration;
 	private JTextField concBox;
 	private JScrollPane pane;
-	private Date dateFromPC;
-	
+		
 	//Constructor
 	GuiDesignforAirQualApp() {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		setTitle("Oz-A-Wear");
+		setTitle("OzAware");
 		addItems();
 		pack();
 		setVisible(true);
@@ -63,7 +63,11 @@ public class GuiDesignforAirQualApp extends JFrame {
 		partTypeBox.setEditable(false);
 		concBox.setEditable(false);
 		
-		//formats text for date and time
+		//puts info into text box
+		date.setText(getAndFormatDate());
+		time.setText(""+getTime());
+		partTypeBox.setText(getParticle());
+		concBox.setText(getConc());
 		
 		//sets scroll bars on scroll pane
 		pane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
@@ -72,13 +76,40 @@ public class GuiDesignforAirQualApp extends JFrame {
 		//sets up map panel
 		pan_Map = new JPanel();
 		pan_Map.setLayout(new FlowLayout());
+		pan_Map.add(mapImg);
+		
+		//sets up info panel
 		
 		
 	}
-		
 	
-	public static void main(String[] args) {
+	//Gets and formats date
+	public String getAndFormatDate(){
+		DateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy");
+		Date date = new Date();
+		return dateFormat.format(date);		
+	}
+	
+	//Gets Time
+	public long getTime(){
+		Date time = new Date();
+		return time.getTime();
+	}
+	
+	//Gets the present particles
+	public String getParticle(){
+		String part = "Carbon Monoxide";
+		return part;
+	}
 		
+	//Gets the concentration
+	public String getConc(){
+		double concent = 2.5;
+		String toReturn = concent + " PPM";
+		return toReturn;
+	}
+	public static void main(String[] args) {
+		new GuiDesignforAirQualApp();
 	}
 
 }
