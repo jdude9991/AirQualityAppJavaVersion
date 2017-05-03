@@ -1,11 +1,19 @@
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
@@ -22,8 +30,16 @@ import javax.swing.ScrollPaneLayout;
 public class GuiDesignforAirQualApp extends JFrame {
 
 	//necessary objects
+	static String url="jdbc:mysql://localhost:3044/scout2017";
+	static String user="root";
+	static String password="Team3044";
+	
+	Connection con = null;
+    Statement st = null;
+    ResultSet rs = null;
+    
 	private JPanel pan_Map;
-	private JLabel mapImg;
+	private JLabel mapData;
 	private JPanel infoPan;
 	private JLabel dAndT;
 	private JTextField date;
@@ -38,7 +54,8 @@ public class GuiDesignforAirQualApp extends JFrame {
 	private JPanel tempLabel;
 	private JPanel tempBox;
 	private JPanel paneAdd;
-		
+	private JTextField latLong;
+	
 	//Constructor
 	GuiDesignforAirQualApp() {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -53,7 +70,7 @@ public class GuiDesignforAirQualApp extends JFrame {
 		//creates items
 		pane = new JScrollPane();
 		pan_Map = new JPanel();
-		mapImg = new JLabel("camera-angle-45-shot.png");
+		mapData = new JLabel("Longitude and Lattitude: ");
 		infoPan = new JPanel();
 		dAndT = new JLabel("Date and Time of Last Update:");
 		tempA = new JPanel();
@@ -70,6 +87,7 @@ public class GuiDesignforAirQualApp extends JFrame {
 		tempBox = new JPanel();
 		tempA = new JPanel();
 		tempB = new JPanel();
+		latLong = new JTextField(50);
 		paneAdd = new JPanel();
 		pane = new JScrollPane(paneAdd);
 		
@@ -78,20 +96,23 @@ public class GuiDesignforAirQualApp extends JFrame {
 		time.setEditable(false);
 		partTypeBox.setEditable(false);
 		concBox.setEditable(false);
+		latLong.setEditable(false);
 		
 		//puts info into text box
 		date.setText(getAndFormatDate());
 		time.setText(getTime());
 		partTypeBox.setText(getParticle());
 		concBox.setText(getConc());
+		latLong.setText(getLatLong());
 		
 		//sets scroll bars on scroll pane
 		pane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		pane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		
 		//sets up map panel
-		pan_Map.setLayout(new FlowLayout());
-		pan_Map.add(mapImg);
+		pan_Map.setLayout(new GridLayout(1,2));
+		pan_Map.add(mapData);
+		pan_Map.add(latLong);
 		
 		//sets up info panel
 		infoPan.setLayout(new GridLayout(2,1));
@@ -154,8 +175,41 @@ public class GuiDesignforAirQualApp extends JFrame {
 		return toReturn;
 	}
 	
+	public String getLatLong(){
+		String lat = "14.235601";
+		String longit = "-45.235634";
+		return longit + " " + lat;
+	}
+	
+	//Gets data from DB
+	public void getInfoAndSaveToString(){
+		//set database to capstonemapdata
+		try {
+			st.execute("use capstonemapdata;");
+		} catch (SQLException e) {JOptionPane.showMessageDialog(null, "An error has occured in executing the query: \"use capstonemapdata\"");}
+		
+		//execute query in DB
+		try {
+			st.executeQuery("SELECT Latitude, Longitude, ParticleInfo, Concentration FROM capstonemapdata.appinfo;");
+		} catch (SQLException e) {JOptionPane.showMessageDialog(null, "An error has occured in executing the query: \"SELECT Latitude, Longitude, ParticleInfo, Concentration FROM capstonemapdata.appinfo;\"");}
+		/* Save info from DB to Strings
+		 * Puts data in text boxes
+		 * Rebuild info
+		 */
+	}
+	
 	//main
 	public static void main(String[] args) {
+		 //Connect to database
+		  try{
+		        String configBase = new File("").getAbsolutePath();
+		        BufferedReader configFile = new BufferedReader(new FileReader(new File(configBase + "\\setUp.cfg")));
+		        url= configFile.readLine();
+		        user=configFile.readLine();
+		        password=configFile.readLine();
+		        }catch (Exception ex){JOptionPane.showMessageDialog(null, "There was an error connecting to the database");}
+		
+		  //creates GUI
 		new GuiDesignforAirQualApp();
 	}
 
