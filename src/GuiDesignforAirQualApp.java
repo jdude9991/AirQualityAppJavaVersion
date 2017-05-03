@@ -11,6 +11,7 @@ import java.sql.Statement;
 import java.util.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -30,7 +31,7 @@ import javax.swing.ScrollPaneLayout;
 public class GuiDesignforAirQualApp extends JFrame {
 
 	//necessary objects
-	static String url="jdbc:mysql://localhost:3044/scout2017";
+	static String url="jdbc:mysql://localhost:3044/capstonedatabase";
 	static String user="root";
 	static String password="Team3044";
 	
@@ -38,6 +39,8 @@ public class GuiDesignforAirQualApp extends JFrame {
     Statement st = null;
     ResultSet rs = null;
     
+    private JPanel dDownPan;
+    private JComboBox dropDown;
 	private JPanel pan_Map;
 	private JLabel mapData;
 	private JPanel infoPan;
@@ -56,10 +59,12 @@ public class GuiDesignforAirQualApp extends JFrame {
 	private JPanel paneAdd;
 	private JTextField latLong;
 	
+	private String[] testDrop = {"1", "2", "3", "4"};
+	
 	//Constructor
 	GuiDesignforAirQualApp() {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		setTitle("OzAware");
+		setTitle("OzAware Database + Net Internals Test");
 		addItems();
 		pack();
 		setVisible(true);
@@ -69,6 +74,8 @@ public class GuiDesignforAirQualApp extends JFrame {
 	private void addItems() {
 		//creates items
 		pane = new JScrollPane();
+		dDownPan = new JPanel();
+		dropDown = new JComboBox(testDrop);
 		pan_Map = new JPanel();
 		mapData = new JLabel("Longitude and Lattitude: ");
 		infoPan = new JPanel();
@@ -98,7 +105,7 @@ public class GuiDesignforAirQualApp extends JFrame {
 		concBox.setEditable(false);
 		latLong.setEditable(false);
 		
-		//puts info into text box
+		//puts test info into text box
 		date.setText(getAndFormatDate());
 		time.setText(getTime());
 		partTypeBox.setText(getParticle());
@@ -108,6 +115,10 @@ public class GuiDesignforAirQualApp extends JFrame {
 		//sets scroll bars on scroll pane
 		pane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		pane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		
+		//set up dD panel
+		dDownPan.setLayout(new FlowLayout());
+		dDownPan.add(dropDown);
 		
 		//sets up map panel
 		pan_Map.setLayout(new GridLayout(1,2));
@@ -137,7 +148,8 @@ public class GuiDesignforAirQualApp extends JFrame {
 		infoPan.add(tempA);
 		infoPan.add(tempB);
 		
-		paneAdd.setLayout(new GridLayout(2,1));
+		paneAdd.setLayout(new GridLayout(3,1));
+		paneAdd.add(dDownPan);
 		paneAdd.add(infoPan);
 		paneAdd.add(pan_Map);
 		
@@ -185,14 +197,16 @@ public class GuiDesignforAirQualApp extends JFrame {
 	public void getInfoAndSaveToString(){
 		//set database to capstonemapdata
 		try {
-			st.execute("use capstonemapdata;");
+			st.execute("use capstonedatabase;");
 		} catch (SQLException e) {JOptionPane.showMessageDialog(null, "An error has occured in executing the query: \"use capstonemapdata\"");}
 		
 		//execute query in DB
 		try {
 			st.executeQuery("SELECT Latitude, Longitude, ParticleInfo, Concentration FROM capstonemapdata.appinfo;");
 		} catch (SQLException e) {JOptionPane.showMessageDialog(null, "An error has occured in executing the query: \"SELECT Latitude, Longitude, ParticleInfo, Concentration FROM capstonemapdata.appinfo;\"");}
-		/* Save info from DB to Strings
+		
+		/* TODO
+		 * Saves data to variables
 		 * Puts data in text boxes
 		 * Rebuild info
 		 */
