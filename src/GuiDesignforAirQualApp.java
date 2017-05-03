@@ -25,12 +25,13 @@ import javax.swing.ScrollPaneLayout;
  * GuiDesignforAirQualApp
  * @author Jacob Miller
  *
- * This contains the gui design and function of the app that will be built in android studio
+ * This contains the data pulling function of the app that will be built in android studio will have testing info, not applicable to 
  */
 @SuppressWarnings("all")
 public class GuiDesignforAirQualApp extends JFrame {
 
 	//necessary objects
+	//connection information
 	static String url="jdbc:mysql://localhost:3044/capstonedatabase";
 	static String user="root";
 	static String password="Team3044";
@@ -39,6 +40,7 @@ public class GuiDesignforAirQualApp extends JFrame {
     Statement st = null;
     ResultSet rs = null;
     
+    //Gui Items
     private JPanel dDownPan;
     private JComboBox dropDown;
 	private JPanel pan_Map;
@@ -160,33 +162,34 @@ public class GuiDesignforAirQualApp extends JFrame {
 		add(pane);
 	}
 	
-	//Gets and formats date
+	//Gets and formats date for test data
 	public String getAndFormatDate(){
 		DateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy");
 		Date date = new Date();
 		return dateFormat.format(date);		
 	}
 	
-	//Gets Time
+	//Gets and formats time for test data
 	public String getTime(){
 		DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
 		Date time = new Date();
 		return timeFormat.format(time);
 	}
 	
-	//Gets the present particles
+	//Gets the present particles for test data
 	public String getParticle(){
 		String part = "Carbon Monoxide";
 		return part;
 	}
 		
-	//Gets the concentration
+	//Gets the concentration for test data
 	public String getConc(){
 		double concent = 2.5;
 		String toReturn = concent + " PPM";
 		return toReturn;
 	}
 	
+	//Gets the lattitude and longitude for test data
 	public String getLatLong(){
 		String lat = "14.235601";
 		String longit = "-45.235634";
@@ -214,7 +217,7 @@ public class GuiDesignforAirQualApp extends JFrame {
 	
 	//main
 	public static void main(String[] args) {
-		 //Connect to database
+		 //Connect to database FIXME connection TRYTO make config file
 		  try{
 		        String configBase = new File("").getAbsolutePath();
 		        BufferedReader configFile = new BufferedReader(new FileReader(new File(configBase + "\\setUp.cfg")));
