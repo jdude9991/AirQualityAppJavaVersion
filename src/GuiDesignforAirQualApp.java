@@ -72,11 +72,8 @@ public class GuiDesignforAirQualApp extends JFrame {
 		//Gets connection FIXME it no like Connection con
 		try {
 	    	Class.forName("java.sql.DriverManager");
-	    	System.out.println(url + " " + user + " " + password);
 	        con = DriverManager.getConnection(url, user, password);
-	        System.out.println("Bravo");
 	        st = con.createStatement();
-	        System.out.println("Charlie");
 	    } catch (Exception ex) {ex.printStackTrace();}
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setTitle("OzAware Database + Net Internals Test");
