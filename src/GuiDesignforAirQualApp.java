@@ -5,10 +5,12 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Date;
+import java.util.StringTokenizer;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import javax.swing.JComboBox;
@@ -35,6 +37,8 @@ public class GuiDesignforAirQualApp extends JFrame {
 	static String url="jdbc:mysql://localhost:3044/capstonedatabase";
 	static String user="root";
 	static String password="Team3044";
+	
+	StringTokenizer stoken;
 	
 	Connection con = null;
     Statement st = null;
@@ -65,6 +69,15 @@ public class GuiDesignforAirQualApp extends JFrame {
 	
 	//Constructor
 	GuiDesignforAirQualApp() {
+		//Gets connection FIXME it no like Connection con
+		try {
+	    	Class.forName("java.sql.DriverManager");
+	    	System.out.println(url + " " + user + " " + password);
+	        con = DriverManager.getConnection(url, user, password);
+	        System.out.println("Bravo");
+	        st = con.createStatement();
+	        System.out.println("Charlie");
+	    } catch (Exception ex) {ex.printStackTrace();}
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setTitle("OzAware Database + Net Internals Test");
 		addItems();
@@ -205,7 +218,7 @@ public class GuiDesignforAirQualApp extends JFrame {
 		
 		//execute query in DB
 		try {
-			st.executeQuery("SELECT Latitude, Longitude, ParticleInfo, Concentration FROM capstonemapdata.appinfo;");
+			st.executeQuery("SELECT UserID, Lattitude, Longitude, ParticleInfo, Concentration FROM capstonedatabase.mapinfo;");
 		} catch (SQLException e) {JOptionPane.showMessageDialog(null, "An error has occured in executing the query: \"SELECT Latitude, Longitude, ParticleInfo, Concentration FROM capstonemapdata.appinfo;\"");}
 		
 		/* TODO
@@ -217,14 +230,14 @@ public class GuiDesignforAirQualApp extends JFrame {
 	
 	//main
 	public static void main(String[] args) {
-		 //Connect to database FIXME connection TRYTO make config file
+		 //Gets DB info
 		  try{
 		        String configBase = new File("").getAbsolutePath();
 		        BufferedReader configFile = new BufferedReader(new FileReader(new File(configBase + "\\setUp.cfg")));
 		        url= configFile.readLine();
 		        user=configFile.readLine();
 		        password=configFile.readLine();
-		        }catch (Exception ex){JOptionPane.showMessageDialog(null, "There was an error connecting to the database");}
+		        }catch (Exception ex){JOptionPane.showMessageDialog(null, "There was an error reading the config file.");}
 		
 		  //creates GUI
 		new GuiDesignforAirQualApp();
