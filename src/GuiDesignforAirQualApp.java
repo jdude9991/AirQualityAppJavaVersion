@@ -1,6 +1,8 @@
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -120,6 +122,7 @@ public class GuiDesignforAirQualApp extends JFrame {
 		//puts test info into text box if test is selected in dropdown
 		if(what.equals("test")){
 			dropDown = new JComboBox(testDrop);
+			dropDown.addItemListener(new ListList());
 			date.setText(getAndFormatDate());
 			time.setText(getTime());
 			partTypeBox.setText(getParticle());
@@ -226,6 +229,18 @@ public class GuiDesignforAirQualApp extends JFrame {
 		 * Saves the info in column 1 to a String array
 		 * adds that info to data space
 		 */
+	}
+	
+	public class ListList implements ItemListener{
+
+		@Override
+		public void itemStateChanged(ItemEvent e) {
+			/* TODO
+			 * If test, set so data changes for 1,2,3,4
+			 * If realtime, set data to data from table depending on the UserID selected 
+			 */
+			
+		}
 	}
 	
 	//main
