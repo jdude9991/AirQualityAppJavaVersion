@@ -222,9 +222,9 @@ public class GuiDesignforAirQualApp extends JFrame {
 		} catch (SQLException e) {JOptionPane.showMessageDialog(null, "An error has occured in executing the query: \"SELECT Latitude, Longitude, ParticleInfo, Concentration FROM capstonemapdata.appinfo;\"");}
 		
 		/* TODO
-		 * Saves data to variables
-		 * Puts data in text boxes
-		 * Rebuild info
+		 * Saves data to 2d string array
+		 * Saves the info in column 1 to a String array
+		 * adds that info to data space
 		 */
 	}
 	
