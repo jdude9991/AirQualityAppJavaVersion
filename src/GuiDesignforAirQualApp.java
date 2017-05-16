@@ -68,7 +68,7 @@ public class GuiDesignforAirQualApp extends JFrame {
 	private String[] testDrop = {"1", "2", "3", "4"};
 	
 	//Constructor
-	GuiDesignforAirQualApp() {
+	GuiDesignforAirQualApp(String test) {
 		//Gets connection FIXME it no like Connection con
 		try {
 	    	Class.forName("java.sql.DriverManager");
@@ -77,17 +77,17 @@ public class GuiDesignforAirQualApp extends JFrame {
 	    } catch (Exception ex) {ex.printStackTrace();}
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setTitle("OzAware Database + Net Internals Test");
-		addItems();
+		addItems(test);
 		pack();
 		setVisible(true);
 	}
 	
 	//sets up and add items to the pane
-	private void addItems() {
+	private void addItems(String what) {
 		//creates items
 		pane = new JScrollPane();
 		dDownPan = new JPanel();
-		dropDown = new JComboBox(testDrop);
+		dropDown = new JComboBox();
 		pan_Map = new JPanel();
 		mapData = new JLabel("Longitude and Lattitude: ");
 		infoPan = new JPanel();
@@ -117,12 +117,15 @@ public class GuiDesignforAirQualApp extends JFrame {
 		concBox.setEditable(false);
 		latLong.setEditable(false);
 		
-		//puts test info into text box
-		date.setText(getAndFormatDate());
-		time.setText(getTime());
-		partTypeBox.setText(getParticle());
-		concBox.setText(getConc());
-		latLong.setText(getLatLong());
+		//puts test info into text box if test is selected in dropdown
+		if(what.equals("test")){
+			dropDown = new JComboBox(testDrop);
+			date.setText(getAndFormatDate());
+			time.setText(getTime());
+			partTypeBox.setText(getParticle());
+			concBox.setText(getConc());
+			latLong.setText(getLatLong());	
+		}
 		
 		//sets scroll bars on scroll pane
 		pane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
@@ -236,8 +239,13 @@ public class GuiDesignforAirQualApp extends JFrame {
 		        password=configFile.readLine();
 		        }catch (Exception ex){JOptionPane.showMessageDialog(null, "There was an error reading the config file.");}
 		
+		  //Allows me to select whether I want test data or not test data
+		  String[] dataType = {"test", "realtime"};
+		  String input = (String) JOptionPane.showInputDialog(null, "Data Type Selection", "Please select what data you would like to see:",
+				  JOptionPane.QUESTION_MESSAGE, null, dataType, dataType[0]);
+		  
 		  //creates GUI
-		new GuiDesignforAirQualApp();
+		new GuiDesignforAirQualApp(input);
 	}
 
 }
